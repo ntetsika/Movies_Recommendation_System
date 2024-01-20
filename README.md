@@ -9,6 +9,11 @@ The Movies Reccomendation System was developed using KNN algorithm on users' mov
 
 ## How to run
 
+```
+pip install -r requirements.txt
+python3 movies_recommendation_system.py
+```
+
 ## Notebook
 For a quick look at the notebook available, click here https://magda-notebooks.runmercury.com/app/movies-recommendation-system
 ![Screen Shot 2024-01-20 at 2 30 55 PM](https://github.com/ntetsika/Movies_Recommendation_System/assets/126838633/0172777b-fc4f-4b08-b994-22cea6969526)
