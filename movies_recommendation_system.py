@@ -178,8 +178,6 @@ def main():
 
     plot_bars(movies_top5_mean_titles, rating_mean, 'Rating', 'Highest rated movies' )
 
-    X, user_mapper, movie_mapper, user_inv_mapper, movie_inv_mapper = create_matrix(ratings)
-
     print(f"Please give a title of a movie you like")
     movie = 'Interstellar'
     titles = np.array(movies['title'].unique())
