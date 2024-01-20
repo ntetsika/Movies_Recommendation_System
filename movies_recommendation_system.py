@@ -11,19 +11,22 @@ import mercury as mr
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def addlabels(x,y):
+    '''Adds label in the bars plot
+       
+    Parameter:  x: list: x-coordinates
+                y: list: y-coordinates
+    Return:       None
+    '''
     for i in range(len(x)):
         plt.text(y[0]*0.5, i, x[i], ha = 'center' )
 
 def plot_bars(x,y, x_label, title):
-    '''prints sentiment analysis
-       makes a most mentioned picks chart
-       makes a chart of sentiment analysis of top picks
+    '''Prints bars for the most rated movies
        
-    Parameter:   picks_ayz: int: top picks to analyze
-                 scores: dictionary: dictionary of all the sentiment analysis
-                 picks: int: most mentioned picks
-                times: list: include # of time top tickers is mentioned
-                top: list: list of top tickers
+    Parameter:  x: list: movie titles
+                y: list: ratings
+                x_label: str: name of x-axis label
+                title: str: plot's title
     Return:       None
     '''
     fig, ax = plt.subplots()
@@ -67,8 +70,11 @@ def plot_bars(x,y, x_label, title):
 
     fig.tight_layout()
 
-    # Create user-item matrix using scipy csr matrix
 def create_matrix(df):
+    '''Creates user-item matrix using scipy csr matrix
+       
+    Parameter:  df: dataframe: data
+    '''
     N = len(df['userId'].unique())
     M = len(df['movieId'].unique())
     
@@ -87,8 +93,14 @@ def create_matrix(df):
                         
     return X, user_mapper, movie_mapper, user_inv_mapper, movie_inv_mapper
                         
-# Find similar movies using KNN
-def find_similar_movies(movie_id, movie_mapper, movie_inv_mapper, X, k, metric='cosine', show_distance=False):
+def find_similar_movies(movie_id, df, k, metric='cosine', show_distance=False):
+    '''Finds similar movies using KNN
+       
+    Parameter:  movie_id: int: movie's id
+                df: dataframe: data
+                k: int: number of neighbors  
+    '''
+    X, user_mapper, movie_mapper, user_inv_mapper, movie_inv_mapper = create_matrix( df )
     neighbor_ids = []
     movie_ind = movie_mapper[movie_id]
     movie_vec = X[movie_ind]
@@ -107,7 +119,7 @@ def find_similar_movies(movie_id, movie_mapper, movie_inv_mapper, X, k, metric='
 def main():
     '''main function
     Parameter:   None
-    Return:       None
+    Return:      None
     '''
     #Read the data
     movies = pd.read_csv('movies.csv')
@@ -185,7 +197,7 @@ def main():
     else:
         print(f"\033[1mSince you watched {movie_title}\033[0m")
         movie_id = movies.loc[movies['title']==movie_title]['movieId'].to_list()[0]
-        similar_ids = find_similar_movies(movie_id, movie_mapper, movie_inv_mapper, X, k=10)
+        similar_ids = find_similar_movies(movie_id, ratings, k=10)
         for i in similar_ids:
             if str(movie_imdb[i]) !='nan':
                 print(movie_titles[i] + ' , Imdb: ' + str(movie_imdb[i]))
